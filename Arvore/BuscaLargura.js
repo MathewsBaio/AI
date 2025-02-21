@@ -1,4 +1,4 @@
-class BuscaLargura {
+export default class BuscaLargura {
   static porLargura(no, fila) {
     if (!fila || fila.length == 0) {
       return;
