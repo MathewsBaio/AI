@@ -1,11 +1,18 @@
+function f(x) {
+  return 0.3 * x + 0.2;
+}
+
 class Point {
   x = 0;
   y = 0;
   label = 0;
+  bias = 0;
+
   constructor(x, y) {
     this.x = x;
     this.y = y;
     this.label = this.getLabel();
+    this.bias = 1;
   }
 
   getLabel() {
@@ -41,6 +48,6 @@ class Point {
   }
 
   debug() {
-    console.log(`label: ${this.label} x: ${this.x} y: ${this.y}`);
+    console.log(`label: ${this.label}\nx:${this.x}\ny:${this.y}`);
   }
 }
