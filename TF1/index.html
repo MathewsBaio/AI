@@ -5,42 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-    <script src="htts://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
+    <div id="mydata"></div>
     <script>
         const xs = tf.tensor([0,1,2,3,4]);
-        // y = 1.2*x+5
-        const ys = xs.mult(1.2).add(5);
-
-        const model = tf.sequential();
-        model.add(tf.layers.dense({units: 1, inputShape: [1]}));
-
-        //Perda e otimizador
-        model.compile({loss:'meanSquaredError', optimizer:'sgd'});
-
-        //Treina
-        model.fits(xs,ys,{epochs:500}).then(() => {myFunction()})
+        /* y = 1.2*x+5*/
+        const ys = xs.mul(1.2).add(5);
         
+        const model = tf.sequential();
+        model.add(tf.layers.dense({units:1,inputShape:[1]}))
 
-        //Usa
+        model.compile({loss:'meanSquaredError',optimizer:'sgd'})
+
+        model.fit(xs,ys,{epochs:500}).then(()=>{myFunction()});
+
         function myFunction() {
             const xMax = 10;
-            const xArr = []
-            const yArr = []
+            const xArr = [];
+            const yArr = [];
+
             for (let x = 0; x <= xMax; x++) {
                 let result = model.predict(tf.tensor([Number(x)]));
-                result.data().then(y => {
-                    xArr.push(x)
-                    yArr(Number(y))
-                    if(x == xMax) {
-                        plot(xArr,yArr)
-                    }
-                })
+                result.data().then( y =>{
+                    xArr.push(x);
+                    yArr.push(Number(y));
+                    if (x==xMax) plot(xArr,yArr);
+                });
+                
             }
         }
-        
 
+        function plot(xArr,yArr) {
+            const data =[{x:xArr,y:yArr,mode:"markers",type:"scatter"}];
+
+            const layout = {
+                xaxis: {range:[0,10]},
+                yaxis: {range:[0,20]},
+            };
+
+            Plotly.newPlot("mydata",data,layout)
+        }
+
+
+        
     </script>
     
 </body>
